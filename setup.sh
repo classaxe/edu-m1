@@ -2,7 +2,7 @@
 
 echo -e "\e[32m*******************************"
 echo -e "* setup.sh - setup for edu-m1 *"
-echo -e "*******************************\e[0m"
+echo -e "*******************************\e[0m\n"
 
 # Create local database schemas and users for all local sites and vhosts for them:
 sites=(
@@ -29,26 +29,26 @@ for i in "${sites[@]}"; do
         web_aliases="${web_aliases} -a ${j}"
     done;
 
-    echo -n "Creating mysql database for ${client}... "
+    echo -en "Creating mysql database \e[33;1m${db_name}\e[0m                "
     echo "create schema ${db_name};" | MYSQL_PWD=root mysql -uroot
-    echo "done."
-    echo -n "Creating mysql user for client ${client}... "
+    echo -e "\e[32m[OK]\e[0m"
+    echo -en "Creating mysql user     \e[33;1m${db_user}@${db_host}\e[0m      "
     echo "grant all privileges on ${db_name}.* to '${db_user}'@'${db_host}' identified by '${db_pass}';" | MYSQL_PWD=root mysql -uroot
-    echo -e "done.\n"
+    echo -e "\e[32m[OK]\e[0m"
 
-    echo -n "Setting up vhost for client ${client} at https://${web_host}... "
+    echo -en "Setting up apache vhost \e[33;1m${web_host}\e[0m "
     sudo vhost add -d ${home_dir} -n ${web_host} ${web_aliases} -p ${php} -f > /dev/null 2>&1
-    echo "done."
-    echo -n "Restarting apache... "
+    echo -e "\e[32m[OK]\e[0m"
+    echo -n "Restarting apache                             "
     sudo service apache2 restart > /dev/null 2>&1
-    echo -e "done.\n"
+    echo -e "\e[32m[OK]\e[0m"
 done
 
-echo -n "Loading database with sample data... "
+echo -n "Installing sample data                        "
 zcat /srv/www/edu-m1/m1.sample-data.sql.gz | MYSQL_PWD=root mysql -uroot edu_m1
-echo -e "done.\n"
+echo -e "\e[32m[OK]\e[0m"
 
-echo -n "Running setup... "
+echo -n "Running Magento M1 setup                      "
 cd "/srv/www/edu-m1/magento"
 php -f install.php -- \
 --license_agreement_accepted "yes" \
@@ -74,10 +74,11 @@ php -f install.php -- \
 --admin_password "Password123" \
 --encryption_key "db23ad69b9028bc105e3ec8ac1cf62a8" \
 > /dev/null
-echo -e "done.\n"
+echo -e "\e[32m[OK]\e[0m\n"
 
 external_ip=$(cat /vagrant/config.yml | grep vagrant_ip | cut -d' ' -f2 | xargs)
 echo "Add the following line to your host file:"
-echo -e "\e[33;1m${external_ip}     edu-m1.demacmedia.com\e[0m\n"
-echo -e "Admin site details:\n    URL:  https://edu-m1.demacmedia.com/admin\n    User: admin\n    Pass: Password123"
+echo -e "\e[33;1m${external_ip}        edu-m1.demacmedia.com\e[0m\n"
+echo -e "Access the site at \e[32;1mhttps://edu-m1.demacmedia.com\e[0m\n"
+echo -e "Admin site details:\n    URL:  https://edu-m1.demacmedia.com/admin\n    User: admin\n    Pass: Password123\n"
 
