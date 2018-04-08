@@ -1,0 +1,5 @@
+magento/.idea/
+magento/app/etc/local.xml
+magento/var/
+
+*.sql
