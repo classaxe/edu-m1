@@ -1,0 +1,7 @@
+<config>
+    <modules>
+        <Classaxe_Configviewer>
+            <version>0.1.0</version>
+        </Classaxe_Configviewer>
+    </modules>
+</config>
