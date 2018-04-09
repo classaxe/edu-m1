@@ -1,0 +1,21 @@
+<config>
+    <modules>
+        <Classaxe_Configviewer>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Classaxe_Configviewer>
+    </modules>
+    <global>
+        <events>
+            <controller_front_init_routers>
+                <observers>
+                    <classaxe_configviewer_model_observer>
+                        <type>singleton</type>
+                        <class>Classaxe_Configviewer_Model_Observer</class>
+                        <method>checkForConfigRequest</method>
+                    </classaxe_configviewer_model_observer>
+                </observers>
+            </controller_front_init_routers>
+        </events>
+    </global>
+</config>
