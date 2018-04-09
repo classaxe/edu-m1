@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Classaxe_Helloworld>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Classaxe_Helloworld>
+    </modules>
+</config>
