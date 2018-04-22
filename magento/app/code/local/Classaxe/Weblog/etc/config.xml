@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Classaxe_Weblog>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </Classaxe_Weblog>
     </modules>
     <frontend>
@@ -52,6 +52,12 @@
                     <use>core_read</use>
                 </connection>
             </weblog_read>
+            <weblog_setup>
+                <setup>
+                    <module>Classaxe_Weblog</module>
+                    <class>Classaxe_Weblog_Model_Resource_Setup</class>
+                </setup>
+            </weblog_setup>
         </resources>
     </global>
 </config>
