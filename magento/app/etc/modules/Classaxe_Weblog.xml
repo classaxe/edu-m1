@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Classaxe_Weblog>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Classaxe_Weblog>
+    </modules>
+</config>
