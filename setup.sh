@@ -4,6 +4,20 @@ echo -e "\e[32m*******************************"
 echo -e "* setup.sh - setup for edu-m1 *"
 echo -e "*******************************\e[0m\n"
 
+php_version=php5.6
+
+shopt -s expand_aliases
+source /etc/profile.d/02-php-aliases.sh
+
+echo -en "Checking php version    \e[33;1m${php_version}\e[0m                "
+
+if $(type -t ${php_version} 2) > /dev/null; then
+    echo -e "\e[32m[OK]\e[0m";
+else
+    echo -e "\e[31;1m[ERROR]\n\e[0m\nSorry: ${php_version} must be available to proceed.\e[0m\n";
+    exit 2
+fi
+
 # Create local database schemas and users for all local sites and vhosts for them:
 sites=(
 #   'client  db_host     db_name   db_user   db_pass       php   web_host                web_aliases (space delimited)'
@@ -30,6 +44,7 @@ for i in "${sites[@]}"; do
     done;
 
     echo -en "Creating mysql database \e[33;1m${db_name}\e[0m                "
+    echo "drop schema if exists ${db_name};" | MYSQL_PWD=root mysql -uroot
     echo "create schema ${db_name};" | MYSQL_PWD=root mysql -uroot
     echo -e "\e[32m[OK]\e[0m"
     echo -en "Creating mysql user     \e[33;1m${db_user}@${db_host}\e[0m      "
@@ -50,7 +65,7 @@ echo -e "\e[32m[OK]\e[0m"
 
 echo -n "Running Magento M1 setup                      "
 cd "/srv/www/edu-m1/magento"
-php -f install.php -- \
+php5.6 -f install.php -- \
 --license_agreement_accepted "yes" \
 --locale "en_CA" \
 --timezone "America/Toronto" \
